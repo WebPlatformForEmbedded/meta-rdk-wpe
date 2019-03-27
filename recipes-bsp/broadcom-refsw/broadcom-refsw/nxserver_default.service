@@ -1,0 +1,16 @@
+[Unit]
+Description=Nxserver Daemon
+After=systemd-modules-load.service docsis.service
+Requires=systemd-modules-load.service docsis.service
+
+[Service]
+Type=notify
+Environment="NEXUS_IR_MODE=4"
+PIDFile=/var/run/NXSERVER.pid
+ExecStartPre=/bin/mknod /dev/pod c 38 0
+ExecStartPre=/usr/bin/nexus_dfb install
+ExecStart=/usr/bin/nxserver -audio_output_delay 500 -video_cdb 5  -fbsize 1920,1080
+ExecStop=/bin/kill -15 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
