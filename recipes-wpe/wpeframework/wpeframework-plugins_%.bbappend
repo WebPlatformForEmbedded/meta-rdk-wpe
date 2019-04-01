@@ -1,6 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += " \
+    file://0001-WebKitBrowser-Add-Time-to-dependencies.patch \
     file://index.html \
 "
 
