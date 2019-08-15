@@ -9,7 +9,7 @@ NOTE: This is an as-is reference RDK WPE adaptation layer for use with RDK-V set
 5. Setup environment, chose your box
 6. `bitbake-layers add-layer <this layer>`
 7. `bitbake-layers add-layer meta-wpe` (and optionally `meta-wpe-restricted`)
-8. `bitbake rdk-wpe-generic` to create an image based off of this layre
+8. `bitbake rdk-thunder-wpe` to create an image based off of this layre
 
 To play with different settings please see `conf\layer.conf` for more features.
 Good luck!
