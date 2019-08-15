@@ -1,9 +1,13 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+#     file://0001-WebKitBrowser-Add-Time-to-dependencies.patch 
+
 SRC_URI += " \
-    file://0001-WebKitBrowser-Add-Time-to-dependencies.patch \
     file://index.html \
 "
+
+# FIXME, for now if wayland is not in distro go EGLFS
+PACKAGECONFIG_remove = "${@bb.utils.contains('DISTRO_FEATURES', 'compositor', '' , 'compositor', d)}"
 
 # ---- compositor settings ----
 WPE_COMPOSITOR_IMPL = "Nexus"
