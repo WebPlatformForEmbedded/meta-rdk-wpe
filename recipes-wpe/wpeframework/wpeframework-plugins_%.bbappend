@@ -1,34 +1,33 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+# Set to rdk splash ui
+WEBKITBROWSER_STARTURL = "http://127.0.0.1:8080/RDKSplashScreen/index.html"
 
-#     file://0001-WebKitBrowser-Add-Time-to-dependencies.patch 
+PACKAGECONFIG_append = " compositor remote-ir"
 
-SRC_URI += " \
-    file://index.html \
-"
+# Compositor settings, if Wayland is in the distro set the implementation to Wayland with Westeros dependency
+WPE_COMPOSITOR_IMPL         = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland',   'Westeros', 'Nexus', d)}"
+WPE_COMPOSITOR_DEP          = "broadcom-refsw"
+WPE_COMPOSITOR_EXTRAFLAGS   = ""
+WPE_COMPOSITOR_HW_READY     = "3"
 
-# FIXME, for now if wayland is not in distro go EGLFS
-PACKAGECONFIG_remove = "${@bb.utils.contains('DISTRO_FEATURES', 'compositor', '' , 'compositor', d)}"
-
-# ---- compositor settings ----
-WPE_COMPOSITOR_IMPL = "Nexus"
-WPE_COMPOSITOR_DEP = "broadcom-refsw"
-
+# Additional flags
 WPE_COMPOSITOR_EXTRAFLAGS = ' \
-    -DPLUGIN_COMPOSITOR_SERVICE="internal" \
-    -DPLUGIN_COMPOSITOR_AUTOTRACE=ON \
     -DPLUGIN_COMPOSITOR_AUTOSTART=true \
     -DPLUGIN_COMPOSITOR_OUTOFPROCESS=true \
-    -DPLUGIN_COMPOSITOR_RESOLUTION=720p \
-    -DPLUGIN_COMPOSITOR_GRAPHICS_HEAP_SIZE="192" \
-    -DPLUGIN_COMPOSITOR_MEMORY_GFX="192" \
-    -DNEXUS_SERVER_HAS_EXTENDED_INIT=OFF \
-    -DNEXUS_SERVER_EXTERNAL=false \
-    -DPLUGIN_COMPOSITOR_IRMODE=4 \
-    -DPLUGIN_COMPOSITOR_NXSERVER=ON \
-    -DPLUGIN_COMPOSITOR_ALLOW_UNAUTHENTICATED_CLIENTS=false \
+    -DPLUGIN_COMPOSITOR_RESOLUTION=1080p60hz \
+    -DPLUGIN_COMPOSITOR_MEMORY_GFX="350" \
+    -DPLUGIN_COMPOSITOR_IRMODE="18" \
     -DPLUGIN_COMPOSITOR_VIRTUALINPUT=ON \
     -DPLUGIN_COMPOSITOR_SVP="None" \
+    -DPLUGIN_COMPOSITOR_PAK_PATH="/usr/bin/" \
+    -DPLUGIN_COMPOSITOR_DRM_PATH="/usr/bin/" \
+    -DPLUGIN_COMPOSITOR_ALLOW_UNAUTHENTICATED_CLIENTS=false \
+    -DPLUGIN_COMPOSITOR_NXSERVER=ON \
+    -DNEXUS_SERVER_HAS_EXTENDED_INIT=false \
+    -DPLUGIN_COMPOSITOR_BOXMODE="2" \
 '
+
+
+# ----------------------------------------------------------------------------
 
 do_install_append() {
     install -d ${D}${WPEFRAMEWORK_PLUGIN_WEBSERVER_PATH}
