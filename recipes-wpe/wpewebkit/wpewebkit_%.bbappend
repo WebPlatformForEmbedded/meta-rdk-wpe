@@ -1,4 +1,4 @@
-WPE_PLATFORM = "${@bb.utils.contains('DISTRO_FEATURES', 'compositor',   'wpeframework', 'nexus', d)}"
+WPE_PLATFORM = "nexus"
 
 # Enable native audio
-PACKAGECONFIG_append = " gst_httpsrc nativeaudio"
+PACKAGECONFIG_append = " gst_httpsrc gst_holepunch nativeaudio"
