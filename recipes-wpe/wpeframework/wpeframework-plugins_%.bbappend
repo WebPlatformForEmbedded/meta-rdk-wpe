@@ -1,7 +1,7 @@
 # Set to rdk splash ui
 WEBKITBROWSER_STARTURL = "http://127.0.0.1:8080/RDKSplashScreen/index.html"
 
-PACKAGECONFIG_append = " compositor remote-ir"
+PACKAGECONFIG_append = " remote-ir"
 
 # Compositor settings, if Wayland is in the distro set the implementation to Wayland with Westeros dependency
 WPE_COMPOSITOR_IMPL         = "${@bb.utils.contains('DISTRO_FEATURES', 'wayland',   'Westeros', 'Nexus', d)}"
@@ -25,14 +25,3 @@ WPE_COMPOSITOR_EXTRAFLAGS = ' \
     -DNEXUS_SERVER_HAS_EXTENDED_INIT=false \
     -DPLUGIN_COMPOSITOR_BOXMODE="2" \
 '
-
-
-# ----------------------------------------------------------------------------
-
-do_install_append() {
-    install -d ${D}${WPEFRAMEWORK_PLUGIN_WEBSERVER_PATH}
-    install -d ${D}/var/www
-    install -m 0755 ${WORKDIR}/index.html ${D}/var/www/
-}
-
-FILES_${PN}_append = "/var/www/index.html"
